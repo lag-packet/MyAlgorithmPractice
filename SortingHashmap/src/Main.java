@@ -1,22 +1,20 @@
-
-//This is a sorting algorithm for hashmaps
-
+/*
+@author: lag-packet
+This is my implementation of sorting the values in a hashmap.
+It currently supports:
+    - selection sort
+ */
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class Main {
     public static void main(String[] args) {
-        int[] numArray = new int[100000];
-
+        int[] numArray = new int[1000];
         for (int i = 0; i < numArray.length; i++) {
             numArray[i] = (int) (Math.random() * 1000);
         }
 
-        int[] sortedArray = selectionSort(numArray);
-        for (int i = 0; i < sortedArray.length; i++) {
-            System.out.println("S-i:" + i + " " + sortedArray[i]);
-        }
-
-        /*int range = 0;
+        //populate the hashmap
         HashMap<Integer, Integer> numberOccurrence = new HashMap<>();
         for (int i = 0; i < numArray.length; i++) {
             if (!numberOccurrence.containsKey(numArray[i])) {
@@ -26,33 +24,14 @@ public class Main {
             }
         }
 
-        //sorting keys in hashmap
-        HashMap<Integer, Integer> numberOccurrenceSorted = new HashMap<>();
-        int maxKey = numberOccurrence.get(0);
-        int jPos = 0;
-        for (int i = 0; i < numberOccurrence.size(); i++) {
-            for (int j = 1; j <= i; j++) {
-                if (numberOccurrence.get(j) > maxKey) {
-                    jPos = j;
-                    maxKey = numberOccurrence.get(j);
-                }
-            }
-            System.out.println("put " + jPos + " maxKey: " + maxKey);
-            numberOccurrenceSorted.put(jPos, maxKey);
-        }
-
-        for (int i = 0; i < numberOccurrenceSorted.size(); i++) {
-            System.out.println(i + " " + numberOccurrence.get(i));
-        }
-        System.out.println("size:" + numberOccurrenceSorted);
-        System.out.println("size:" + numberOccurrence);
-        //print numberOccurence
-        for (int i = 0; i < numberOccurrence.size(); i++) {
-            System.out.println(numberOccurrence.get(i));
-        }*/
-
+        LinkedHashMap<Integer, Integer> numberOccurrenceSorted = selectionSort(numberOccurrence);
+        System.out.println("unsorted size:" + numberOccurrence.size() + " map:" + numberOccurrence);
+        System.out.println("sorted size: " + numberOccurrenceSorted.size() + " map: "+ numberOccurrenceSorted);
     }
 
+    /*
+    Selection sort for regular arrays as demonstration.
+     */
     public static int[] selectionSort(int num[]) {
         int[] sortedArray = num;
         for (int i = 0; i < sortedArray.length; i++) {
@@ -71,5 +50,27 @@ public class Main {
             }
         }
         return sortedArray;
+    }
+
+    /*
+    Selection sort for hashmaps to sort by values with distinct keys.
+    uses while sorted size != map size for multiple pass through due to missing keys.
+    ?? better solution to be found ??
+     */
+    public static LinkedHashMap<Integer, Integer> selectionSort(HashMap<Integer, Integer> map) {
+        LinkedHashMap<Integer, Integer> sortedMap = new LinkedHashMap<>();
+        while(sortedMap.size() != map.size()) {
+            for (int i : map.keySet()) {
+                int currentMaxPos = i;
+                for (int j : map.keySet()) {
+                    if (sortedMap.containsKey(j)) {continue;}
+                    if (map.get(currentMaxPos) < map.get(j)) {
+                        currentMaxPos = j;
+                    }
+                }
+                sortedMap.put(currentMaxPos, map.get(currentMaxPos));
+            }
+        }
+        return sortedMap;
     }
 }
