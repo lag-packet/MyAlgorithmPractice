@@ -9,9 +9,10 @@ import java.util.LinkedHashMap;
 
 public class Main {
     public static void main(String[] args) {
-        int[] numArray = new int[1000];
+        long startTime = System.nanoTime();
+        int[] numArray = new int[100000];
         for (int i = 0; i < numArray.length; i++) {
-            numArray[i] = (int) (Math.random() * 1000);
+            numArray[i] = (int) (Math.random() * 10000);
         }
 
         //populate the hashmap
@@ -25,8 +26,11 @@ public class Main {
         }
 
         LinkedHashMap<Integer, Integer> numberOccurrenceSorted = selectionSort(numberOccurrence);
-        System.out.println("unsorted size:" + numberOccurrence.size() + " map:" + numberOccurrence);
+        System.out.println("unsorted size:" + numberOccurrence.size() + " map:" + numberOccurrence + "\n");
         System.out.println("sorted size: " + numberOccurrenceSorted.size() + " map: "+ numberOccurrenceSorted);
+        long endTime   = System.nanoTime();
+        long totalTime = endTime - startTime;
+        System.out.println(totalTime / 1000000);
     }
 
     /*
@@ -61,6 +65,7 @@ public class Main {
         LinkedHashMap<Integer, Integer> sortedMap = new LinkedHashMap<>();
         while(sortedMap.size() != map.size()) {
             for (int i : map.keySet()) {
+                //if (sortedMap.containsKey(i)) {continue;}
                 int currentMaxPos = i;
                 for (int j : map.keySet()) {
                     if (sortedMap.containsKey(j)) {continue;}
